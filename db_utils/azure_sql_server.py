@@ -72,7 +72,7 @@ def get_col_dtypes(dataTypes=None):
     return dataList
 
 def df_to_sql_table(df=None, table_name=None):
-    ''' Create a table statement from Pandas DataFrame '''
+    ''' Create a table statement from multi-index Pandas DataFrame '''
     print('Creating {table_name} Table Statement...')
     col_names = list(df.reset_index().columns.values)
     col_dtypes = get_col_dtypes(df.reset_index().dtypes)
