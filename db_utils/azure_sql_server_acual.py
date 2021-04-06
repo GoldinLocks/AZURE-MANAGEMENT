@@ -1,5 +1,6 @@
-import textwrap
+import sys
 import pyodbc
+import textwrap
 import pandas as pd 
 from configparser import ConfigParser
 
@@ -11,16 +12,6 @@ SERVER_NAME = config.get('main', 'SERVER_NAME')
 DATABASE_NAME = config.get('main', 'DATABASE_NAME')
 USERNAME = config.get('main', 'USERNAME')
 PASSWORD = config.get('main', 'PASSWORD')
-
-conf_df = pd.DataFrame.from_dict({'SERVER_NAME': SERVER_NAME,
-                                  'REDIRECT_URI': DATABASE_NAME,
-                                  'ACCOUNT_NUMBER': USERNAME,
-                                  'CREDENTIALS_PATH': PASSWORD}, 
-                                  orient='index', columns=['USER_INFO:'])
-
-print()
-print(conf_df)
-print()
 
 # Specify Driver
 driver = '{ODBC Driver 17 for SQL Server}'
@@ -46,21 +37,26 @@ connection_string = textwrap.dedent('''
     password=PASSWORD
 ))
 
-def connect(connection_string: str) -> None:
+def connect(connection_string: str, retries: int) -> None:
     ''' Connect to the Azure SQL database server '''
     cnxn = None
-    while True:
+    for _ in range(retries):
         print('\nConnecting to Database...')
         print(f'\nDatabase Connection: \n{connection_string}')
         cnxn: pyodbc.Connection = pyodbc.connect(connection_string)
         if cnxn == None:
+            print('\nConnection Unsuccessful Retrying...')
             pass
         else:
             print(f'\nDatabase Connection Object: {str(cnxn)}')
             return cnxn
+    else:
+        print('\nUnable to Establish Database Connection...')
+        sys.exit(1)
+
 
 # Create New PYODBC Connection Object
-cnxn = connect(connection_string=connection_string)
+cnxn = connect(connection_string=connection_string, retries=3)
 
 # Create Cursor Object From Connection
 crsr: pyodbc.Cursor = cnxn.cursor()
