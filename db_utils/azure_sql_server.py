@@ -7,6 +7,8 @@ from sqlalchemy import event
 from sqlalchemy import create_engine
 from configparser import ConfigParser
 
+
+# Read config file
 config = ConfigParser()
 config.read('config/config.ini')
 
@@ -159,5 +161,5 @@ def table_last_date(table_name: str) -> None:
     # Last date query
     query = f'SELECT * FROM {table_name} WHERE date = (SELECT max(date) FROM {table_name})'
     # Read data from database to pandas
-    data = pd.read_sql(query, cnxn).set_index(['date','symbol']).index.levels[0].values[0]
-    return data
+    date = pd.read_sql(query, cnxn).set_index(['date','symbol']).index.levels[0].values[0]
+    return date
