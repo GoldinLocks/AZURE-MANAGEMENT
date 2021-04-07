@@ -1,0 +1,4 @@
+date,symbol,prediction,side,weight,usd_value,share_count
+2021-04-06,AAPL,-0.0002443794595976285,sell,0.0,0.0,0.0
+2021-04-06,INTC,-0.00017241107237437985,sell,0.0,0.0,0.0
+2021-04-06,MSFT,-0.0022005880796107345,sell,0.0,0.0,0.0

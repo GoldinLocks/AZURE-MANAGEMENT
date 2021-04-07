@@ -92,7 +92,7 @@ def get_col_dtypes(dataTypes=None):
 
 def df_to_sql_table(df=None, table_name=None):
     ''' Create a table statement from multi-index Pandas DataFrame '''
-    print('Creating {table_name} Table Statement...')
+    print('\nCreating {table_name} Table Statement...')
     col_names = list(df.reset_index().columns.values)
     col_dtypes = get_col_dtypes(df.reset_index().dtypes)
     create_table = f'CREATE TABLE [{DATABASE_NAME}].[dbo].[{table_name}] ('
@@ -125,13 +125,16 @@ def insert_table(df=None, table_name=None):
     cnxn.close()
     return print('\nDone...')
 
-def df_bulk_insert(df=None, table_name=None):
+def df_bulk_insert(df=None, table_name=None, new_table=False):
     ''' Bulk DataFrame insert into SQL Database '''
-    # Insert new table
-    insert_table(
-        df=df, 
-        table_name=table_name
-        )
+    if new_table:
+        # Insert new table
+        insert_table(
+            df=df, 
+            table_name=table_name
+            )
+    else:
+        pass
     # Database connection parameters
     params = 'DRIVER=' + driver + ';SERVER=' + server +\
              ';PORT=1433;DATABASE=' + DATABASE_NAME +\
