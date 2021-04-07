@@ -57,6 +57,25 @@ def connect(connection_string: str, retries: int) -> None:
         print('\nUnable to Establish Database Connection Exiting...')
         sys.exit(1)
 
+def get_table_names(db_name: str) -> None:
+    ''' Get the name of each table in SQL database '''
+    # Create New PYODBC Connection Object
+    cnxn = connect(
+        connection_string=connection_string, 
+        retries=3
+        )
+    # Query table names
+    query = textwrap.dedent('''
+    SELECT TABLE_NAME
+    FROM INFORMATION_SCHEMA.TABLES
+    WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_CATALOG='{db_name}'
+    '''.format(
+    db_name=db_name
+    ))
+    # Read data from database to pandas
+    data = pd.read_sql(query, cnxn)['TABLE_NAME'].to_list()
+    return data
+
 def get_col_dtypes(dataTypes=None):
     ''' Get data type for each column in Pandas DataFrame'''
     dataList = []

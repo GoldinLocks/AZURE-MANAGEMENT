@@ -1,6 +1,15 @@
-import pandas as pd 
+import textwrap
+import pandas as pd
 from database import azure_db_utils
+from configparser import ConfigParser
 
+
+# Read config file
+config = ConfigParser()
+config.read('config/config.ini')
+
+# Define database Info
+DATABASE_NAME = config.get('main', 'DATABASE_NAME')
 
 # Read base_fts csv to DataFrame
 print('\nBase Features DF:') 
@@ -23,3 +32,6 @@ print(df.tail(3))
 # Get last date in database table
 last_date = azure_db_utils.table_last_date(table_name ='TD_ML_Bot_Eng_Fts')
 print(f'\nLast Date: \n{last_date}')
+
+db_tables = azure_db_utils.get_table_names(db_name=DATABASE_NAME)
+print(f'{DATABASE_NAME} Tables: \n{db_tables}')
