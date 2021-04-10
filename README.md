@@ -8,6 +8,8 @@
 
 ## Overview
 
+Utility functions to help with Azure SQL database CRUD operations.
+
 ## Setup
 
 **Setup - Requirements Install:***

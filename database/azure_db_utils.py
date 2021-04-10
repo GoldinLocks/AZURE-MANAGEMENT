@@ -141,7 +141,7 @@ def df_bulk_insert(df=None, table_name=None, new_table=False):
              ';UID=' + USERNAME + ';PWD=' + PASSWORD
     db_params = urllib.parse.quote_plus(params)
     # Create connetion engine 
-    engine = create_engine('mssql+pyodbc:///?odbc_connect={}'.format(db_params))
+    engine = create_engine(f'mssql+pyodbc:///?odbc_connect={db_params}')
     # https://medium.com/analytics-vidhya/speed-up-bulk-inserts-to-sql-db-using-pandas-and-python-61707ae41990
     @event.listens_for(engine, "before_cursor_execute")
     def receive_before_cursor_execute(
